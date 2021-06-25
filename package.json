@@ -1,0 +1,22 @@
+{
+  "name": "assessment-hahow",
+  "version": "1.0.0",
+  "description": "Assessment project for HaHow.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roycrxtw/assessment-hahow.git"
+  },
+  "keywords": [
+    "assessment"
+  ],
+  "author": "roycrxtw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roycrxtw/assessment-hahow/issues"
+  },
+  "homepage": "https://github.com/roycrxtw/assessment-hahow#readme"
+}
