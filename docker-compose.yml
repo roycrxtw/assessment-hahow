@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  nginx:
+    image: assessment-hahow-api
+    container_name: assessment-hahow-api
+    ports:
+      - 3310:3310
+    restart: "no"
