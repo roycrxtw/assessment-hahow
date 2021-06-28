@@ -7,6 +7,9 @@
     "start": "node -v && pm2 start ecosystem.config.js",
     "start-dev": "node -v && pm2 start ecosystem.config.js && pm2 log --raw",
     "test": "jest",
+    "test-w": "jest --watch",
+    "test-coverage": "jest --coverage",
+    "test-coverage-open": "open tests/coverage/lcov-report/index.html",
     "build-image": "docker -v && docker build -t assessment-hahow-api ."
   },
   "repository": {
@@ -27,11 +30,33 @@
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
-    "jest": "^27.0.5"
+    "jest": "^27.0.5",
+    "sinon": "^11.1.1"
   },
   "dependencies": {
+    "apidoc": "^0.17.5",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "joi": "^17.4.0",
+    "lodash": "^4.17.21",
     "pino": "^6.11.3"
+  },
+  "jest": {
+    "verbose": true,
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>"
+    ],
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js"
+    ],
+    "coverageDirectory": "<rootDir>/tests/coverage",
+    "errorOnDeprecated": false
   },
   "engines": {
     "node": ">=16"
