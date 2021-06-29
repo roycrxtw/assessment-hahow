@@ -1,4 +1,5 @@
 const axios = require('axios').default;
+const expect = require('expect');
 const sinon = require('sinon');
 
 const HahowApiService = require('lib/HahowApiService');
@@ -154,6 +155,144 @@ describe('HahowApiService.attachProfiles', () => {
 
     const received = await HahowApiService.attachProfiles(heroes);
     expect(received).toEqual(expected);
+    stub.restore();
+  });
+});
+
+describe('HahowApiService.getHero', () => {
+  test('throw Error if parameter: id is missing.', async () => {
+    try {
+      await HahowApiService.getHero();
+    } catch (err) {
+      expect(err.message).toMatch('缺少必要參數');
+    }
+  });
+
+  test('return hero for a given id', async () => {
+    const fakedResponse = { data: { id: 1, name: 'Black Knight', image: 'faked-url' } };
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+    const expected = {
+      id: 1,
+      name: 'Black Knight',
+      image: 'faked-url',
+    };
+    const received = await HahowApiService.getHero(1);
+    expect(received).toEqual(expected);
+    stub.restore();
+  });
+
+  test('filter unexpected fields', async () => {
+    const fakedResponse = {
+      data: {
+        id: 1, name: 'Black Knight', image: 'faked-url', foo: 'bar',
+      },
+    };
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+    const expected = {
+      id: 1,
+      name: 'Black Knight',
+      image: 'faked-url',
+    };
+    const received = await HahowApiService.getHero(1);
+    expect(received).toEqual(expected);
+    stub.restore();
+  });
+
+  test('return null if any required field is missing.', async () => {
+    const fakedResponse = {
+      data: {
+        image: 'only-this-faked-url',
+      },
+    };
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+    const expected = null;
+
+    const received = await HahowApiService.getHero(1);
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('throw error if the api retry is exhausted', async () => {
+    const stub = sinon.stub(axios, 'get').rejects();
+
+    try {
+      await HahowApiService.getHero(1);
+    } catch (e) {
+      expect(e.message).toMatch('暫時無法取得資料');
+    }
+    expect(stub.callCount).toBe(4); // 驗證執行次數: 1 + retry 3 times
+
+    stub.restore();
+  });
+});
+
+describe('HahowApiService.doGet', () => {
+  test('throw Error if parameter: url is missing.', async () => {
+    expect.assertions(1);
+
+    try {
+      await HahowApiService.doGet();
+    } catch (err) {
+      expect(err.message).toMatch('缺少必要參數');
+    }
+  });
+
+  test('throw Error if retry is exhausted.', async () => {
+    expect.assertions(1);
+    const stub = sinon.stub(axios, 'get').rejects();
+    try {
+      await HahowApiService.doGet('faked-url');
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
+    stub.restore();
+  });
+
+  test('return null if API returns 404 status code.', async () => {
+    expect.assertions(1);
+
+    const fakedResponse = { status: 404 };
+    const expected = null;
+
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+
+    const received = await HahowApiService.doGet('faked-url');
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('return throw Error if API response a 500-series code.', async () => {
+    expect.assertions(1);
+
+    const fakedResponse = { status: 500 };
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+
+    try {
+      await HahowApiService.doGet('faked-url');
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
+
+    stub.restore();
+  });
+
+  test('return expected result with retry mechanism.', async () => {
+    // 假定前兩次請求都失敗, 但透過 retry 機制應正確回傳預期結果
+    expect.assertions(1);
+
+    const fakedApiResponse = { status: 200, data: { balance: 3000 } };
+    const expected = { balance: 3000 };
+
+    const stub = sinon.stub(axios, 'get');
+    stub.onCall(0).rejects();
+    stub.onCall(1).rejects();
+    stub.onCall(2).resolves(fakedApiResponse);
+
+    const received = await HahowApiService.doGet('faked-url');
+    expect(received).toEqual(expected);
+
     stub.restore();
   });
 });
