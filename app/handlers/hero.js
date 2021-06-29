@@ -1,7 +1,4 @@
-const _ = require('lodash');
-
 const HahowApiService = require('lib/HahowApiService');
-const Hero = require('app/models/Hero');
 
 /**
  * @api {get} /heroes [Hero] Get Hero List
@@ -36,13 +33,6 @@ async function listHero(req, res) {
   if (req.isUserAuth) {
     heroes = await HahowApiService.attachProfiles(heroes);
   }
-
-  // 透過 reducer 過濾掉不符合規範之資料
-  heroes = _.reduce(heroes, (acc, val) => {
-    const h = Hero.createHero(val);
-    if (h) acc.push(h);
-    return acc;
-  }, []);
 
   res.json({ heroes });
 }
