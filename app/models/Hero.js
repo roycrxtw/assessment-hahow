@@ -21,6 +21,11 @@ class Hero {
       id, name, image, profile,
     });
   }
+
+  // 生成 Profile 物件, 透過本方法過濾掉非預期資料
+  static createProfile({ str, agi, luk, int }) {
+    return { str, agi, luk, int };
+  }
 }
 
 module.exports = Hero;
