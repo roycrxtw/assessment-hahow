@@ -2,15 +2,18 @@ const express = require('express');
 
 const config = require('config/main');
 const logger = require('lib/Logger');
-const routes = require('app/routes');
+const routeBuilder = require('app/routes/builder');
 const requestEnricher = require('app/middlewares/requestEnricher');
+const errorHandler = require('app/middlewares/errorHandler');
 
 const app = express();
 const { port } = config;
 
 app.use(requestEnricher);
 
-app.use('/', routes);
+routeBuilder(app);
+
+app.use(errorHandler);
 
 // The Catch-All Error Handler
 // 當指定路徑不存在時, 由此 handler 處理
