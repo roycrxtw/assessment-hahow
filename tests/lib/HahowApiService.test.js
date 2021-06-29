@@ -6,14 +6,14 @@ const HahowApiService = require('lib/HahowApiService');
 
 describe('HahowApiService.listHero', () => {
   test('return a hero list', async () => {
-    const fakedApiResponse = { data: [{ id: 1, name: 'Belfast' }] };
+    const fakedApiResponse = { data: [{ id: 1, name: 'Belfast', image: 'faked-url' }] };
     const expected = [
-      { id: 1, name: 'Belfast' },
+      { id: 1, name: 'Belfast', image: 'faked-url' },
     ];
     const stub = sinon.stub(axios, 'get').resolves(fakedApiResponse);
     const received = await HahowApiService.listHero();
 
-    expect(received).toStrictEqual(expected);
+    expect(received).toEqual(expected);
     expect(stub.callCount).toBe(1);
 
     stub.restore();
@@ -21,9 +21,9 @@ describe('HahowApiService.listHero', () => {
 
   test('return hero list with retry mechanism.', async () => {
     // 假定前 2 次呼叫都失敗, 第 3 次呼叫才成功
-    const fakedApiResponse = { data: [{ id: 1, name: 'Belfast' }] };
+    const fakedApiResponse = { data: [{ id: 1, name: 'Belfast', image: 'faked-url' }] };
     const expected = [
-      { id: 1, name: 'Belfast' },
+      { id: 1, name: 'Belfast', image: 'faked-url' },
     ];
     const stub = sinon.stub(axios, 'get');
     stub.onCall(0).rejects();
@@ -31,7 +31,7 @@ describe('HahowApiService.listHero', () => {
     stub.onCall(2).resolves(fakedApiResponse);
 
     const received = await HahowApiService.listHero();
-    expect(received).toStrictEqual(expected);
+    expect(received).toEqual(expected);
     expect(stub.callCount).toBe(3);
 
     stub.restore();
