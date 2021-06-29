@@ -73,6 +73,14 @@ describe('HahowApiService.checkProfile', () => {
     const received = HahowApiService.checkProfile(profile);
     expect(received).toBe(true);
   });
+
+  test('ignore unexpected fields', () => {
+    const profile = {
+      str: 1, int: 2, luk: 3, agi: 4, foo: 'bar',
+    };
+    const received = HahowApiService.checkProfile(profile);
+    expect(received).toBe(true);
+  });
 });
 
 describe('HahowApiService.attachProfiles', () => {
@@ -291,6 +299,113 @@ describe('HahowApiService.doGet', () => {
     stub.onCall(2).resolves(fakedApiResponse);
 
     const received = await HahowApiService.doGet('faked-url');
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+});
+
+describe('HahowApiService.getProfile', () => {
+  test('throw Error if parameter: id is missing.', async () => {
+    expect.assertions(1);
+
+    try {
+      await HahowApiService.getProfile();
+    } catch (err) {
+      expect(err.message).toMatch('缺少必要參數');
+    }
+  });
+
+  test('throw Error if retry is exhausted.', async () => {
+    expect.assertions(1);
+    const stub = sinon.stub(axios, 'get').rejects();
+    try {
+      await HahowApiService.getProfile(1);
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
+    stub.restore();
+  });
+
+  test('return null if API returns 404 status code.', async () => {
+    expect.assertions(1);
+
+    const fakedResponse = { status: 404 };
+    const expected = null;
+
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+
+    const received = await HahowApiService.getProfile(1);
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('return throw Error if API response a 500-series code.', async () => {
+    expect.assertions(1);
+
+    const fakedResponse = { status: 500 };
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+
+    try {
+      await HahowApiService.getProfile('faked-url');
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
+
+    stub.restore();
+  });
+
+  test('return expected result with retry mechanism.', async () => {
+    // 假定前兩次請求都失敗, 但透過 retry 機制應正確回傳預期結果
+    expect.assertions(1);
+
+    const fakedApiResponse = {
+      status: 200,
+      data: {
+        int: 1, str: 1, luk: 1, agi: 1,
+      },
+    };
+    const expected = {
+      id: 1,
+      profile: {
+        int: 1, str: 1, luk: 1, agi: 1,
+      },
+    };
+
+    const stub = sinon.stub(axios, 'get');
+    stub.onCall(0).rejects();
+    stub.onCall(1).rejects();
+    stub.onCall(2).resolves(fakedApiResponse);
+
+    const received = await HahowApiService.getProfile(1);
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('filter unexpected fields.', async () => {
+    expect.assertions(1);
+
+    const fakedApiResponse = {
+      status: 200,
+      data: {
+        int: 1, str: 1, luk: 1, agi: 1, foo: 'bar',
+      },
+    };
+    const expected = {
+      id: 1,
+      profile: {
+        int: 1, str: 1, luk: 1, agi: 1,
+      },
+    };
+
+    const stub = sinon.stub(axios, 'get');
+    stub.onCall(0).rejects();
+    stub.onCall(1).rejects();
+    stub.onCall(2).resolves(fakedApiResponse);
+
+    const received = await HahowApiService.getProfile(1);
     expect(received).toEqual(expected);
 
     stub.restore();
