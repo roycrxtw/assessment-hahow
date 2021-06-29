@@ -16,6 +16,7 @@ module.exports = {
     'max-len': ['error', { code: 140, ignoreComments: true }],
     'no-restricted-syntax': 'off',
     'no-continue': 'off',
+    'object-curly-newline': ['error', { consistent: true }],
   },
   settings: {
     'import/resolver': {
