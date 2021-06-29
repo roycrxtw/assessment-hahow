@@ -5,7 +5,7 @@ class Hero {
     this.id = id;
     this.name = name;
     this.image = image;
-    this.profile = profile;
+    if (profile) this.profile = profile;
   }
 
   // 生成 Hero 物件, 透過本 factory function 去過濾掉有問題的資料
