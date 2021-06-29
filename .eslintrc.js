@@ -11,6 +11,9 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'max-len': ['error', { code: 140, ignoreComments: true }],
+    'no-restricted-syntax': 'off',
+    'no-continue': 'off',
   },
   settings: {
     'import/resolver': {
