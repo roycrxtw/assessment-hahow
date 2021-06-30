@@ -6,7 +6,7 @@ const handler = require('app/handlers/hero');
 
 const router = express.Router();
 
-// router.get('/:heroId', basicAuth, asyncHandler(handler.getHero)); // todo
+router.get('/:heroId', basicAuth, asyncHandler(handler.getHero));
 router.get('/', basicAuth, asyncHandler(handler.listHero));
 
 module.exports = router;
