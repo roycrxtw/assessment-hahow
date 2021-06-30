@@ -169,6 +169,7 @@ describe('HahowApiService.attachProfiles', () => {
 
 describe('HahowApiService.getHero', () => {
   test('throw Error if parameter: id is missing.', async () => {
+    expect.assertions(1);
     try {
       await HahowApiService.getHero();
     } catch (err) {
@@ -206,18 +207,19 @@ describe('HahowApiService.getHero', () => {
     stub.restore();
   });
 
-  test('return null if any required field is missing.', async () => {
+  test('throw error if the required field is always missing in the response.', async () => {
+    expect.assertions(1);
     const fakedResponse = {
       data: {
         image: 'only-this-faked-url',
       },
     };
     const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
-    const expected = null;
-
-    const received = await HahowApiService.getHero(1);
-    expect(received).toEqual(expected);
-
+    try {
+      await HahowApiService.getHero(1);
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
     stub.restore();
   });
 
@@ -238,12 +240,14 @@ describe('HahowApiService.getHero', () => {
     expect.assertions(1);
 
     const fakedResponse = { status: 200, data: { foo: 'bar' } };
-    const expected = null;
 
     const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+    try {
+      await HahowApiService.getHero(1);
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
 
-    const received = await HahowApiService.getHero(1);
-    expect(received).toEqual(expected);
     stub.restore();
   });
 });
@@ -320,6 +324,16 @@ describe('HahowApiService.doGet', () => {
     expect(received).toEqual(expected);
 
     stub.restore();
+  });
+
+  test('throw error if transformer is not a function.', async () => {
+    expect.assertions(1);
+
+    try {
+      await HahowApiService.doGet({ url: 'faked-url', transformer: {} });
+    } catch (e) {
+      expect(e.message).toEqual('轉換器需為函式');
+    }
   });
 
   test('return apply transformer correctly for an object response.', async () => {
