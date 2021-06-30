@@ -2,13 +2,20 @@ const _ = require('lodash');
 const logger = require('lib/Logger');
 const { default: axios } = require('axios');
 
+/**
+ * 身份認證
+ * 透過 name and password 呼叫遠端 api 進行身份認證
+ * 當有任何非預期結果時皆視為未驗證身份, 且不使用 retry.
+ */
 async function basicAuth(req, res, next) {
   let isAuth = false;
 
-  const name = _.get(req, 'headers.name');
-  const password = _.get(req, 'headers.password');
+  const name = _.trim(_.get(req, 'headers.name'));
+  const password = _.trim(_.get(req, 'headers.password'));
 
   logger.info({ msg: `Accessing API with user:${name}` });
+
+  if (!name || !password) return next();
 
   try {
     const authResult = await axios.post('https://hahow-recruit.herokuapp.com/auth', { name, password });
@@ -24,7 +31,7 @@ async function basicAuth(req, res, next) {
 
   req.isUserAuth = isAuth;
 
-  next();
+  return next();
 }
 
 module.exports = basicAuth;

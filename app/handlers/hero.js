@@ -31,25 +31,24 @@ const logger = require('lib/Logger');
  * }
  */
 async function getHero(req, res) {
-  // throw new Error('foobar');
   // Path parameter checks
   const schema = Joi.object({
     heroId: Joi.number().integer().required(),
   }).options({ stripUnknown: false });
-  await schema.validateAsync(req.params); // 當 validation result 存在 error 物件時代表驗證失敗
+  await schema.validateAsync(req.params); // 當驗證失敗時會直接丟出 joi error.
 
   const { heroId } = req.params;
-  let hero = await HahowApiService.getHero(heroId); // todo: bad error 時應該要 retry
+  let hero = await HahowApiService.getHero(heroId);
   logger.info({ msg: 'Get hero', hero });
 
-  if (!hero) res.json();
+  if (!hero) return res.json({ msg: '找不到指定英雄' });
 
   if (req.isUserAuth) {
     const heroes = await HahowApiService.attachProfiles([hero]);
     hero = heroes[0];
   }
 
-  res.json(hero);
+  return res.json(hero);
 }
 
 /**
