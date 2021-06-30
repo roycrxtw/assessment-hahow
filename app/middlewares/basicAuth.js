@@ -10,6 +10,8 @@ async function basicAuth(req, res, next) {
 
   logger.info({ msg: `Accessing API with user:${name}` });
 
+  if (!name || !password) return next();
+
   try {
     const authResult = await axios.post('https://hahow-recruit.herokuapp.com/auth', { name, password });
 
@@ -24,7 +26,7 @@ async function basicAuth(req, res, next) {
 
   req.isUserAuth = isAuth;
 
-  next();
+  return next();
 }
 
 module.exports = basicAuth;
