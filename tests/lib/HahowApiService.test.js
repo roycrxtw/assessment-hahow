@@ -19,6 +19,25 @@ describe('HahowApiService.listHero', () => {
     stub.restore();
   });
 
+  test('filter invalid response', async () => {
+    expect.assertions(2);
+
+    const fakedApiResponse = { data: [
+      { id: 1, name: 'Belfast', image: 'faked-url' },
+      { id: 2, name: 'Belfast', foo: 'bar' },
+    ] };
+    const expected = [
+      { id: 1, name: 'Belfast', image: 'faked-url' },
+    ];
+    const stub = sinon.stub(axios, 'get').resolves(fakedApiResponse);
+    const received = await HahowApiService.listHero();
+
+    expect(received).toEqual(expected);
+    expect(stub.callCount).toBe(1);
+
+    stub.restore();
+  });
+
   test('return hero list with retry mechanism.', async () => {
     // 假定前 2 次呼叫都失敗, 第 3 次呼叫才成功
     const fakedApiResponse = { data: [{ id: 1, name: 'Belfast', image: 'faked-url' }] };
