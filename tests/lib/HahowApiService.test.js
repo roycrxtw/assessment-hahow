@@ -233,6 +233,19 @@ describe('HahowApiService.getHero', () => {
 
     stub.restore();
   });
+
+  test('throw null if the api result is invalid', async () => {
+    expect.assertions(1);
+
+    const fakedResponse = { status: 200, data: { foo: 'bar' } };
+    const expected = null;
+
+    const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
+
+    const received = await HahowApiService.getHero(1);
+    expect(received).toEqual(expected);
+    stub.restore();
+  });
 });
 
 describe('HahowApiService.doGet', () => {
