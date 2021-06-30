@@ -253,7 +253,7 @@ describe('HahowApiService.doGet', () => {
     expect.assertions(1);
 
     try {
-      await HahowApiService.doGet();
+      await HahowApiService.doGet({ url: null });
     } catch (err) {
       expect(err.message).toMatch('缺少必要參數');
     }
@@ -263,7 +263,7 @@ describe('HahowApiService.doGet', () => {
     expect.assertions(1);
     const stub = sinon.stub(axios, 'get').rejects();
     try {
-      await HahowApiService.doGet('faked-url');
+      await HahowApiService.doGet({ url: 'faked-url' });
     } catch (err) {
       expect(err.message).toMatch('暫時無法取得資料');
     }
@@ -278,7 +278,7 @@ describe('HahowApiService.doGet', () => {
 
     const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
 
-    const received = await HahowApiService.doGet('faked-url');
+    const received = await HahowApiService.doGet({ url: 'faked-url' });
     expect(received).toEqual(expected);
 
     stub.restore();
@@ -291,7 +291,7 @@ describe('HahowApiService.doGet', () => {
     const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
 
     try {
-      await HahowApiService.doGet('faked-url');
+      await HahowApiService.doGet({ url: 'faked-url' });
     } catch (err) {
       expect(err.message).toMatch('暫時無法取得資料');
     }
@@ -311,7 +311,7 @@ describe('HahowApiService.doGet', () => {
     stub.onCall(1).rejects();
     stub.onCall(2).resolves(fakedApiResponse);
 
-    const received = await HahowApiService.doGet('faked-url');
+    const received = await HahowApiService.doGet({ url: 'faked-url' });
     expect(received).toEqual(expected);
 
     stub.restore();
