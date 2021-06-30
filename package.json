@@ -47,6 +47,7 @@
     "pino": "^6.11.3"
   },
   "jest": {
+    "bail": true,
     "verbose": true,
     "modulePaths": [
       "<rootDir>"
