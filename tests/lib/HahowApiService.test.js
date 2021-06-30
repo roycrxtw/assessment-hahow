@@ -249,6 +249,11 @@ describe('HahowApiService.getHero', () => {
 });
 
 describe('HahowApiService.doGet', () => {
+  const transformer = function (data) {
+    if (!data.bal) return null;
+    return { balance: data.bal };
+  };
+
   test('throw Error if parameter: url is missing.', async () => {
     expect.assertions(1);
 
@@ -313,6 +318,57 @@ describe('HahowApiService.doGet', () => {
 
     const received = await HahowApiService.doGet({ url: 'faked-url' });
     expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('return apply transformer correctly for an object response.', async () => {
+    // 假定前兩次請求都失敗, 但透過 retry 機制應正確回傳預期結果
+    expect.assertions(1);
+
+    const fakedApiResponse = { status: 200, data: { bal: 3000 } };
+    const expected = { balance: 3000 };
+
+    const stub = sinon.stub(axios, 'get').resolves(fakedApiResponse);
+
+    const received = await HahowApiService.doGet({ url: 'faked-url', transformer });
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('return expected result with transformer and retry mechanism even if there are some bad response.', async () => {
+    // 假定前兩次請求都取得非規範之物件, 但透過 retry 機制應正確回傳預期結果
+    expect.assertions(1);
+
+    const goodApiResponse = { status: 200, data: { bal: 3000 } };
+    const badApiResponse = { status: 200, foo: { bar: 1 } };
+    const expected = { balance: 3000 };
+
+    const stub = sinon.stub(axios, 'get');
+    stub.onCall(0).resolves(badApiResponse);
+    stub.onCall(1).resolves(badApiResponse);
+    stub.onCall(2).resolves(goodApiResponse);
+
+    const received = await HahowApiService.doGet({ url: 'faked-url', transformer });
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('throw Error if the API response was changed.', async () => {
+    // 假定遠端 API 提供的欄位已經變更, 導致每次轉換都失敗, 並耗盡 retry 次數, 則需要丟出錯誤
+    expect.assertions(1);
+
+    const badApiResponse = { status: 200, foo: { bar: 1 } };
+
+    const stub = sinon.stub(axios, 'get').resolves(badApiResponse);
+
+    try {
+      await HahowApiService.doGet({ url: 'faked-url', transformer });
+    } catch (e) {
+      expect(e.message).toMatch('暫時無法取得資料');
+    }
 
     stub.restore();
   });
