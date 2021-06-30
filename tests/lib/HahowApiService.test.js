@@ -389,6 +389,8 @@ describe('HahowApiService.doGet', () => {
 });
 
 describe('HahowApiService.getProfile', () => {
+  const goodResponse = { status: 200, data: { str: 1, int: 1, luk: 1, agi: 1 } };
+
   test('throw Error if parameter: id is missing.', async () => {
     expect.assertions(1);
 
@@ -431,7 +433,7 @@ describe('HahowApiService.getProfile', () => {
     const stub = sinon.stub(axios, 'get').resolves(fakedResponse);
 
     try {
-      await HahowApiService.getProfile('faked-url');
+      await HahowApiService.getProfile(1);
     } catch (err) {
       expect(err.message).toMatch('暫時無法取得資料');
     }
@@ -490,6 +492,38 @@ describe('HahowApiService.getProfile', () => {
 
     const received = await HahowApiService.getProfile(1);
     expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('filter ignore invalid responses and retry.', async () => {
+    expect.assertions(1);
+
+    const badResponse = { status: 200, data: { foo: 'bar' } };
+    const expected = { id: 1, profile: { int: 1, str: 1, luk: 1, agi: 1 } };
+
+    const stub = sinon.stub(axios, 'get');
+    stub.onCall(0).resolves(badResponse);
+    stub.onCall(1).resolves(goodResponse);
+
+    const received = await HahowApiService.getProfile(1);
+    expect(received).toEqual(expected);
+
+    stub.restore();
+  });
+
+  test('throw error if the API always returns bad response.', async () => {
+    expect.assertions(1);
+
+    const badResponse = { status: 200, data: { foo: 'bar' } };
+
+    const stub = sinon.stub(axios, 'get').resolves(badResponse);
+
+    try {
+      await HahowApiService.getProfile(1);
+    } catch (err) {
+      expect(err.message).toMatch('暫時無法取得資料');
+    }
 
     stub.restore();
   });
