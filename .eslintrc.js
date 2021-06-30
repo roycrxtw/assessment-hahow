@@ -18,6 +18,7 @@ module.exports = {
     'no-continue': 'off',
     'object-curly-newline': ['error', { consistent: true }],
     'prefer-destructuring': 'off',
+    'func-names': ['error', 'as-needed'],
   },
   settings: {
     'import/resolver': {
