@@ -9,9 +9,11 @@ class Hero {
   }
 
   // 生成 Hero 物件, 透過本 factory function 去過濾掉有問題的資料
-  static createHero({
-    id, name, image, profile = null,
-  }) {
+  static createHero(prop) {
+    if (!prop) return null;
+
+    const { id, name, image, profile } = prop;
+
     if (!id || !name || !image) {
       // ignore this bad data
       return null;
