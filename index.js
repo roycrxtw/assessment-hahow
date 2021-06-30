@@ -4,6 +4,7 @@ const config = require('config/main');
 const logger = require('lib/Logger');
 const routeBuilder = require('app/routes/builder');
 const requestEnricher = require('app/middlewares/requestEnricher');
+const joiErrorHandler = require('app/middlewares/joiErrorHandler');
 const errorHandler = require('app/middlewares/errorHandler');
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(requestEnricher);
 
 routeBuilder(app);
 
+app.use(joiErrorHandler);
 app.use(errorHandler);
 
 // The Catch-All Error Handler
