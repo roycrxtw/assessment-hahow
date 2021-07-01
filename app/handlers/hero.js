@@ -4,7 +4,7 @@ const HahowApiService = require('lib/HahowApiService');
 const logger = require('lib/Logger');
 
 /**
- * @api {get} /heroes/:id [Hero] Get Hero
+ * @api {get} /heroes/:heroId [Hero] Get Hero
  * @apiDescription 取得指定 Hero 資料, 當為認證使用者時, 將會額外包含 Hero 之 profile 資料.
  *
  * @apiName GetHeroObject
@@ -29,7 +29,7 @@ async function getHero(req, res) {
   // Path parameter checks
   const schema = Joi.object({
     heroId: Joi.number().integer().required(),
-  }).options({ stripUnknown: false });
+  }).options({ stripUnknown: true });
   await schema.validateAsync(req.params); // 當驗證失敗時會直接丟出 joi error.
 
   const { heroId } = req.params;

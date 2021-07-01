@@ -20,7 +20,7 @@ async function basicAuth(req, res, next) {
     const schema = Joi.object({
       name: Joi.string().alphanum().allow('').max(100),
       password: Joi.string().alphanum().allow('').max(100),
-    }).options({ stripUnknown: false });
+    }).options({ stripUnknown: true });
     await schema.validateAsync(req.headers);
   } catch (e) {
     // 當驗證失敗時會丟出 joi error, 因為在 middleware 中故需要擷取起來並傳給 next 才可以正確地讓 express 提示使用者輸入資料存在問題
