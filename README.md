@@ -1,6 +1,6 @@
 # Assessment-hahow
 
-[![CI/CD workflow](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml/badge.svg)](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml)
+[![CI/CD workflow](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml/badge.svg)](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml)+[![Integration Test Workflow](https://github.com/roycrxtw/assessment-hahow/actions/workflows/integration-test.yml/badge.svg)](https://github.com/roycrxtw/assessment-hahow/actions/workflows/integration-test.yml)
 
 Assessment project for HaHow.
 
