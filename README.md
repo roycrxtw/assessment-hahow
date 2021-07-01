@@ -1,5 +1,7 @@
 # Assessment-hahow
 
+[![CI/CD workflow](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml/badge.svg)](https://github.com/roycrxtw/assessment-hahow/actions/workflows/node.js.yml)
+
 Assessment project for HaHow.
 
 # Contents
