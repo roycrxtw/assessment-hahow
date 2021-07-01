@@ -84,11 +84,15 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name:
 
 # 關於測試
 
-測試的部分, 專案中透過 husky 去做 pre-commit 的 hook, 開發時 local 執行 commit 皆會觸發 `npm test`.
+測試的部分, 專案中透過 husky 去做 pre-commit 的 hook, 故在開發時 local 執行 commit 皆會觸發 `npm test`.
 
 ## Unit-test
 
 單元測試的部分透過 jest 測試框架以及 sinon 來做 dependency stub/fake 去達成隔離 side effect.
+
+## API test
+
+測試時使用 postman 執行 api testing.
 
 ## 如何執行測試
 
