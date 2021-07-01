@@ -62,3 +62,12 @@ jobs:
           echo "Push image to ECR"
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Deploy by CodeDeploy
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name rx-app-assessment-hahow \
+            --deployment-group-name rx-app-assessment-hahow-group \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
