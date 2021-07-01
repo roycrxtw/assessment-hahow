@@ -23,6 +23,15 @@ log 部分則使用 pino 套件達到 log level 管理, 以利在 (需要) produ
 使用 jest 框架搭配 sinon 做 unit test. 詳見 [關於測試](#關於測試).
 
 
+## 系統架構圖
+
+![infra](static/chart-infra.png)
+
+## 部署流程
+
+![infra](static/chart-cicd.png)
+
+
 # 如何跑起來
 
 若有安裝 docker 以及 docker-compose:
