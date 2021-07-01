@@ -5,4 +5,4 @@ services:
     container_name: assessment-hahow-api
     ports:
       - 3310:3310
-    restart: "no"
+    restart: always
