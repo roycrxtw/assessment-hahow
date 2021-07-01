@@ -11,6 +11,7 @@
     "test-coverage": "jest --coverage",
     "test-coverage-open": "open tests/coverage/lcov-report/index.html",
     "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
+    "doc": "apidoc -i app/ -o static/apidoc",
     "build-image": "docker -v && docker build --no-cache -t assessment-hahow-api ."
   },
   "repository": {
@@ -45,6 +46,17 @@
     "joi": "^17.4.0",
     "lodash": "^4.17.21",
     "pino": "^6.11.3"
+  },
+  "apidoc": {
+    "name": "Hahow Assessment Project",
+    "version": "1.0.0",
+    "description": "測驗用專案. Created by roycrxtw, July 2021.",
+    "title": "Hahow Assessment Project - Service APIs",
+    "sampleUrl": "/",
+    "template": {
+      "withCompare": true,
+      "forceLanguage": "en"
+    }
   },
   "jest": {
     "bail": true,

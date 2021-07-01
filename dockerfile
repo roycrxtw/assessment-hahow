@@ -29,6 +29,9 @@ RUN git clone https://github.com/roycrxtw/assessment-hahow.git /var/app/${APP_NA
 
 RUN npm install --production
 
+# Generate apidoc
+RUN npm run doc
+
 EXPOSE ${PORT}
 
 # Booting
