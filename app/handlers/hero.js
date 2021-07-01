@@ -13,21 +13,16 @@ const logger = require('lib/Logger');
  * @apiSampleRequest off
  *
  * @apiSuccessExample Success
- * {
- *   "heroes": [
- *     {
- *       "id": "1",
- *       "name": "Daredevil",
- *       "image": "http://i.annihil.us/u/prod/marvel/i/mg/6/90/537ba6d49472b/standard_xlarge.jpg",
- *       "profile": {
- *           "str": 2,
- *           "int": 7,
- *           "agi": 9,
- *           "luk": 7
- *       }
- *     },
- *     ...omitted
- *   ]
+ * { // 若使用者通過認證時, 將會包含 profile 欄位
+ *   "id": "1",
+ *   "name": "Daredevil",
+ *   "image": "http://i.annihil.us/u/prod/marvel/i/mg/6/90/537ba6d49472b/standard_xlarge.jpg",
+ *   "profile": {
+ *       "str": 2,
+ *       "int": 7,
+ *       "agi": 9,
+ *       "luk": 7
+ *   }
  * }
  */
 async function getHero(req, res) {
