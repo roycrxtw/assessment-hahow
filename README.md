@@ -102,7 +102,16 @@ npm run test-coverage-open  # 開啟 coverage html 報告
 
 # CI/CD
 
-CI/CD 的部分使用 github action 去達成.
+CI/CD 的部分使用 github action 去達成自動化整合以及部署.
+
+
+## CI
+
+每次 pull request 皆會觸發 CI workflow, 會對 node.js 12, 14, 16 三個版本執行 unit-test.
+
+## CD
+
+當 push 到 main branch 時將會觸發 CD 流程執行 build image 並 push to AWS ECR 後, 使用 AWS codeDeploy 執行 EC2 instance 之部署.
 
 # Issues
 
