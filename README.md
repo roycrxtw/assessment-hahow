@@ -4,15 +4,53 @@ Assessment project for HaHow.
 
 # Contents
 
+- [API Endpoints](#api-endpoints)
 - [Concepts](#concepts)
 - [如何跑起來](#如何跑起來)
 - [Coding Style](#Coding-Style)
 - [關於測試](#關於測試)
 - [Issues](#Issues)
 
-# Concepts
+# API Endpoints
 
 服務網址: [https://assessment.roycrxtw.uk](https://assessment.roycrxtw.uk)
+
+## A. List Heroes [GET] /heroes
+
+```bash
+https://assessment.roycrxtw.uk/heroes
+
+# Request
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://assessment.roycrxtw.uk/heroes
+```
+
+## B. Single Hero [GET] /heroes/:heroId
+
+```bash
+https://assessment.roycrxtw.uk/heroes/1
+
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://assessment.roycrxtw.uk/heroes/1
+```
+
+## C. Authenticated List Heroes [GET] /heroes
+
+```bash
+https://assessment.roycrxtw.uk/heroes
+
+# Request
+curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET https://assessment.roycrxtw.uk/heroes
+```
+
+## D. Authenticated Single Hero [GET] /heroes/:heroId
+
+```bash
+https://assessment.roycrxtw.uk/heroes/1
+
+# Request
+curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET https://assessment.roycrxtw.uk/heroes/1
+```
+
+# Concepts
 
 本專案使用 node.js 搭配 express 進行 API 服務, service process 透過 pm2 進行管理.
 
