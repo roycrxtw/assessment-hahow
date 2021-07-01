@@ -32,8 +32,15 @@ git clone https://github.com/roycrxtw/assessment-hahow.git
 cd assessment-hahow
 npm run build-image
 docker-compose up -d
+
+# container 跑起來後:
+echo '嘗試取得 service about 資訊'
+curl -X GET http://localhost:3310/about
+# response: {"msg":"Hahow Assessment Project by roycrxtw"}
+
 echo '嘗試取得英雄列表'
 curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3310/heroes
+# response: a hero list
 ```
 
 若要直接執行:
