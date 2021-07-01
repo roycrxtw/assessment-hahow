@@ -58,6 +58,8 @@ log 部分則使用 `pino` 套件達到 log level 管理, 以利在 (需要) pro
 
 文件的部分, 則透過 `apidoc` 進行 API 文件的生成.
 
+- [apidoc 說明文件](https://assessment.roycrxtw.uk/apidoc)
+
 ## test
 
 使用 jest 框架搭配 sinon 做 unit test. 詳見 [關於測試](#關於測試).
