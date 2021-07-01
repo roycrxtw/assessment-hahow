@@ -8,6 +8,7 @@
     "start-dev": "node -v && pm2 start ecosystem.config.js && pm2 log --raw",
     "test": "jest",
     "test-w": "jest --watch",
+    "test-int-prod": "echo 'Integration testing...' && newman run tests/postman/integration-test-prod-collection.json -e tests/postman/integration-test-prod-env.json",
     "test-coverage": "jest --coverage",
     "test-coverage-open": "open tests/coverage/lcov-report/index.html",
     "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",

@@ -1,0 +1,674 @@
+{
+	"info": {
+		"_postman_id": "e4ae2419-3438-4464-be1c-c111236d5304",
+		"name": "integration-test-prod",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "#auth-Get hero with auth @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Field test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('id');",
+							"    pm.expect(body).to.have.property('name');",
+							"    pm.expect(body).to.have.property('image');",
+							"",
+							"    pm.expect(body.id).to.be.an('string');",
+							"    pm.expect(body.name).to.be.an('string');",
+							"    pm.expect(body.image).to.be.an('string');",
+							"",
+							"    pm.expect(body.id).to.not.equal('');",
+							"    pm.expect(body.name).to.not.equal('');",
+							"",
+							"    if (body.profile) {",
+							"        const fields = ['str', 'agi', 'luk', 'int'];",
+							"        for (const f of fields) {",
+							"            pm.expect(body.profile).to.have.property(f);",
+							"            pm.expect(body.profile[`${f}`]).to.be.an('number');",
+							"        }",
+							"    }",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "#Auth-Get Hero-bad parameter @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Structure test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('ok');",
+							"    pm.expect(body).to.have.property('msg');",
+							"",
+							"    pm.expect(body.ok).to.be.an('boolean');",
+							"    pm.expect(body.msg).to.be.an('string');",
+							"",
+							"    pm.expect(body.ok).to.not.equal('');",
+							"    pm.expect(body.msg).to.not.equal('');",
+							"});",
+							"",
+							"pm.test(\"Content test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body.ok).to.equal(false);",
+							"    pm.expect(body.msg).to.match(/欄位.*不符合規範/);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1酒"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "#Auth-Get Hero-bad auth parameter @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Structure test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('ok');",
+							"    pm.expect(body).to.have.property('msg');",
+							"",
+							"    pm.expect(body.ok).to.be.an('boolean');",
+							"    pm.expect(body.msg).to.be.an('string');",
+							"",
+							"    pm.expect(body.ok).to.not.equal('');",
+							"    pm.expect(body.msg).to.not.equal('');",
+							"});",
+							"",
+							"pm.test(\"Content test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body.ok).to.equal(false);",
+							"    pm.expect(body.msg).to.match(/欄位 name 不符合規範/);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					},
+					{
+						"key": "Name",
+						"value": "howhow$$",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-GetHero: not-found @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Field test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('msg');",
+							"    pm.expect(body.msg).to.be.an('string');",
+							"    pm.expect(body.msg).to.equal('找不到指定英雄');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "92334235"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-list hero-bad auth @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Structure test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('ok');",
+							"    pm.expect(body).to.have.property('msg');",
+							"",
+							"    pm.expect(body.ok).to.be.an('boolean');",
+							"    pm.expect(body.msg).to.be.an('string');",
+							"",
+							"    pm.expect(body.ok).to.not.equal('');",
+							"    pm.expect(body.msg).to.not.equal('');",
+							"});",
+							"",
+							"pm.test(\"Content test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body.ok).to.equal(false);",
+							"    pm.expect(body.msg).to.match(/欄位 name 不符合規範/);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow#",
+						"type": "text"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-list hero @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Field test\", function () {",
+							"    const body = pm.response.json();",
+							"    pm.expect(body).to.have.property('heroes');",
+							"    pm.expect(body.heroes).to.be.an('array');",
+							"",
+							"    // Test every hero",
+							"    for (let hero of body.heroes) {",
+							"        pm.expect(hero).to.have.property('id');",
+							"        pm.expect(hero).to.have.property('name');",
+							"        pm.expect(hero).to.have.property('image');",
+							"",
+							"        pm.expect(hero.id).to.be.an('string');",
+							"        pm.expect(hero.name).to.be.an('string');",
+							"        pm.expect(hero.image).to.be.an('string');",
+							"",
+							"        pm.expect(hero.id).to.not.equal('');",
+							"        pm.expect(hero.name).to.not.equal('');",
+							"",
+							"        if (hero.profile) {",
+							"            const fields = ['str', 'agi', 'luk', 'int'];",
+							"            for (const f of fields) {",
+							"                pm.expect(hero.profile).to.have.property(f);",
+							"                pm.expect(hero.profile[`${f}`]).to.be.an('number');",
+							"            }",
+							"        }",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text"
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getHero: not-found @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Field test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('msg');",
+							"    pm.expect(body.msg).to.be.an('string');",
+							"    pm.expect(body.msg).to.equal('找不到指定英雄');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "23423423432"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getHero @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Field test\", function () {",
+							"    const body = pm.response.json();",
+							"",
+							"    pm.expect(body).to.have.property('id');",
+							"    pm.expect(body).to.have.property('name');",
+							"    pm.expect(body).to.have.property('image');",
+							"",
+							"    pm.expect(body.id).to.be.an('string');",
+							"    pm.expect(body.name).to.be.an('string');",
+							"    pm.expect(body.image).to.be.an('string');",
+							"",
+							"    pm.expect(body.id).to.not.equal('');",
+							"    pm.expect(body.name).to.not.equal('');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Name",
+						"value": "hahow",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Password",
+						"value": "rocks",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes/:id",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List hero @prod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Structure test\", function () {",
+							"    const body = pm.response.json();",
+							"    pm.expect(body.heroes).to.be.an('array');",
+							"",
+							"    // Test every hero",
+							"    for (let hero of body.heroes) {",
+							"        pm.expect(hero).to.have.property('id');",
+							"        pm.expect(hero).to.have.property('name');",
+							"        pm.expect(hero).to.have.property('image');",
+							"",
+							"        pm.expect(hero.id).to.be.an('string');",
+							"        pm.expect(hero.name).to.be.an('string');",
+							"        pm.expect(hero.image).to.be.an('string');",
+							"",
+							"        pm.expect(hero.id).to.not.equal('');",
+							"        pm.expect(hero.name).to.not.equal('');",
+							"        pm.expect(hero.image).to.not.equal('');",
+							"    }",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content test\", function () {",
+							"    const body = pm.response.json();",
+							"    // Test every hero",
+							"    for (let hero of body.heroes) {",
+							"        const {id, name, image } = hero;",
+							"        pm.expect(id).to.match(/[0-9]+/);",
+							"        pm.expect(name).to.match(/[a-zA-Z]+/);",
+							"        pm.expect(image).to.match(/http.*/);",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host-prod}}/heroes",
+					"host": [
+						"{{host-prod}}"
+					],
+					"path": [
+						"heroes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
