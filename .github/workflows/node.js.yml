@@ -62,7 +62,6 @@ jobs:
           echo "Push image to ECR"
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      steps:
 
       - name: SSH to ec2
         uses: appleboy/ssh-action@master
