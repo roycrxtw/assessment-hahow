@@ -11,7 +11,7 @@
     "test-coverage": "jest --coverage",
     "test-coverage-open": "open tests/coverage/lcov-report/index.html",
     "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
-    "build-image": "docker -v && docker build -t assessment-hahow-api ."
+    "build-image": "docker -v && docker build --no-cache -t assessment-hahow-api ."
   },
   "repository": {
     "type": "git",
