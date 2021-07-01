@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const Joi = require('joi');
+
 const logger = require('lib/Logger');
 const { default: axios } = require('axios');
 
@@ -12,6 +14,18 @@ async function basicAuth(req, res, next) {
 
   const name = _.trim(_.get(req, 'headers.name'));
   const password = _.trim(_.get(req, 'headers.password'));
+
+  // Auth parameter checks
+  try {
+    const schema = Joi.object({
+      name: Joi.string().alphanum().allow('').max(100),
+      password: Joi.string().alphanum().allow('').max(100),
+    }).options({ stripUnknown: false });
+    await schema.validateAsync(req.headers);
+  } catch (e) {
+    // 當驗證失敗時會丟出 joi error, 因為在 middleware 中故需要擷取起來並傳給 next 才可以正確地讓 express 提示使用者輸入資料存在問題
+    return next(e);
+  }
 
   logger.info({ msg: `Accessing API with user:${name}` });
 
