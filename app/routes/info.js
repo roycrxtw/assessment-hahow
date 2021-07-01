@@ -13,4 +13,6 @@ router.get('/about', (req, res) => {
   res.json({ msg: 'Hahow Assessment Project by roycrxtw' });
 });
 
+router.use('/apidoc', express.static('static/apidoc'));
+
 module.exports = router;

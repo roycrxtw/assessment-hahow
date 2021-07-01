@@ -105,3 +105,4 @@ dist
 
 # Customised
 package-lock.json
+static/apidoc/
