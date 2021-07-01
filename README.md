@@ -52,9 +52,9 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name:
 
 # Concepts
 
-本專案使用 node.js 搭配 express 進行 API 服務, service process 透過 pm2 進行管理.
+本專案使用 node.js 搭配 `express` 進行 API 服務, service process 透過 `pm2` 進行管理.
 
-log 部分則使用 pino 套件達到 log level 管理, 以利在 (需要) production 環境時可以關閉非必要與 debug logs.
+log 部分則使用 `pino` 套件達到 log level 管理, 以利在 (需要) production 環境時可以關閉非必要與 debug logs.
 
 文件的部分, 則透過 `apidoc` 進行 API 文件的生成.
 
