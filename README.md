@@ -23,6 +23,15 @@ log 部分則使用 pino 套件達到 log level 管理, 以利在 (需要) produ
 使用 jest 框架搭配 sinon 做 unit test. 詳見 [關於測試](#關於測試).
 
 
+## 系統架構圖
+
+![infra](static/chart-infra.png)
+
+## 部署流程
+
+![infra](static/chart-cicd.png)
+
+
 # 如何跑起來
 
 若有安裝 docker 以及 docker-compose:
@@ -75,11 +84,15 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name:
 
 # 關於測試
 
-測試的部分, 專案中透過 husky 去做 pre-commit 的 hook, 開發時 local 執行 commit 皆會觸發 `npm test`.
+測試的部分, 專案中透過 husky 去做 pre-commit 的 hook, 故在開發時 local 執行 commit 皆會觸發 `npm test`.
 
 ## Unit-test
 
 單元測試的部分透過 jest 測試框架以及 sinon 來做 dependency stub/fake 去達成隔離 side effect.
+
+## API test
+
+測試時使用 postman 執行 api testing.
 
 ## 如何執行測試
 
@@ -102,7 +115,16 @@ npm run test-coverage-open  # 開啟 coverage html 報告
 
 # CI/CD
 
-CI/CD 的部分使用 github action 去達成.
+CI/CD 的部分使用 github action 去達成自動化整合以及部署.
+
+
+## CI
+
+每次 pull request 皆會觸發 CI workflow, 會對 node.js 12, 14, 16 三個版本執行 unit-test.
+
+## CD
+
+當 push 到 main branch 時將會觸發 CD 流程執行 build image 並 push to AWS ECR 後, 使用 AWS codeDeploy 執行 EC2 instance 之部署.
 
 # Issues
 
