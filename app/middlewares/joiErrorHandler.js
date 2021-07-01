@@ -8,10 +8,10 @@ function joiErrorHandler(err, req, res, next) {
     const detail = err.details[0];
     const key = _.get(detail, 'path').join('.');
     if (detail.type === 'any.required') {
-      throw new Error(`缺少必要欄位:${key}`);
+      return res.status(400).json({ ok: false, msg: `缺少必要欄位:${key}` });
     }
-    throw new Error(`欄位 ${key} 不符合規範`);
+    return res.status(400).json({ ok: false, msg: `欄位 ${key} 不符合規範` });
   }
-  next(err);
+  return next(err);
 }
 module.exports = joiErrorHandler;
