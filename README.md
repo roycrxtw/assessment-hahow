@@ -12,6 +12,8 @@ Assessment project for HaHow.
 
 # Concepts
 
+服務網址: [https://assessment.roycrxtw.uk](https://assessment.roycrxtw.uk)
+
 本專案使用 node.js 搭配 express 進行 API 服務, service process 透過 pm2 進行管理.
 
 log 部分則使用 pino 套件達到 log level 管理, 以利在 (需要) production 環境時可以關閉非必要與 debug logs.
@@ -24,6 +26,10 @@ log 部分則使用 pino 套件達到 log level 管理, 以利在 (需要) produ
 
 
 ## 系統架構圖
+
+系統架構在個人的 AWS EC2 instance 上, 透過不同的 container 去服務不同的 API services.
+
+在 app server 前面尚有一台架在 ec2 上的 nginx 作為 reverse proxy 以及提供 TLS 連線的功能.
 
 ![infra](static/chart-infra.png)
 
