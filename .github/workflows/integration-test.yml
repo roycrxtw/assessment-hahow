@@ -1,0 +1,26 @@
+name: Integration Test Workflow
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/10 */1 * * *'
+
+jobs:
+  integration-test:
+    name: 'Integration Test'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install -g newman
+    - run: |
+        newman run ahm_api_calls.postman_collection.json -e ahm-local.postman_environment.json
