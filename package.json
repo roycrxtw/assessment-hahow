@@ -47,6 +47,17 @@
     "lodash": "^4.17.21",
     "pino": "^6.11.3"
   },
+  "apidoc": {
+    "name": "Hahow Assessment Project",
+    "version": "1.0.0",
+    "description": "測驗用專案. Created by roycrxtw, July 2021.",
+    "title": "Hahow Assessment Project - Service APIs",
+    "sampleUrl": "/",
+    "template": {
+      "withCompare": true,
+      "forceLanguage": "en"
+    }
+  },
   "jest": {
     "bail": true,
     "verbose": true,
